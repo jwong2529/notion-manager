@@ -183,13 +183,13 @@ def format_date_input(user_input: str, allow_time=True, tz=None):
     consumed = 0
 
     if tokens:
-        if tokens[0] in ("today",):
+        if tokens[0] in ("today", "td"):
             dt = now.replace(hour=0, minute=0, second=0, microsecond=0)
             consumed = 1
-        elif tokens[0] in ("tomorrow",):
+        elif tokens[0] in ("tomorrow", "tm"):
             dt = (now + timedelta(days=1)).replace(hour=0, minute=0, second=0, microsecond=0)
             consumed = 1
-        elif tokens[0] in ("yesterday",):
+        elif tokens[0] in ("yesterday", "yest", "yd"):
             dt = (now - timedelta(days=1)).replace(hour=0, minute=0, second=0, microsecond=0)
             consumed = 1
 
@@ -273,7 +273,7 @@ def format_date_input(user_input: str, allow_time=True, tz=None):
                 continue
 
     if dt is None:
-        raise ValueError("Invalid date. Examples: '2025-08-17', '08-17', '817', '0817', '011726', or '01172026'; also 'today', 'tuesday', 'this fri', 'next wed'.")
+        raise ValueError("Invalid date. Examples: '2025-08-17', '08-17', '817', '0817', '011726', or '01172026'; also 'td', 'tm', 'yd', 'this tue', 'next wed'.")
 
     def build_recurrences(dt):
         if not recurrence_mode:
@@ -513,7 +513,7 @@ def prompt_for_property(prop_name, prop_info, allow_time, tz):
 
     elif prop_type == "date":
         print(styling.dim("Enter a date (examples: '2025-08-17 11:59 PM', '08-17', '0817 1159 PM')"))
-        print(styling.dim("Shortcuts: 'today', 'tomorrow', 'this tue', 'next fri'"))
+        print(styling.dim("Shortcuts: 'td', 'tm', 'yd', 'this tue', 'next fri'"))
         print(styling.dim("Recurrence: 'mwf3w' (Mon/Wed/Fri for 3 weeks), 'tr2w' (Tue/Thu for 2 weeks)"))
         while True:
             user_input = input("Date: ").strip()
